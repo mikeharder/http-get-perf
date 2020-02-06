@@ -1,1 +1,1 @@
-docker run -it --rm --network host httpgetperf-server
+docker run -it --rm --network host http-get-perf-server
