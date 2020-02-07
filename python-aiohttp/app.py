@@ -5,14 +5,11 @@ import time
 
 completed_requests = 0
 
-async def execute_request(session, url):
-    async with session.get(url) as response:
-        await response.text()
-
 async def execute_requests(session, url):
     global completed_requests
     while True:
-        await execute_request(session, url)
+        async with session.get(url) as response:
+            await response.text()
         completed_requests += 1
 
 def print_results(requests, duration):
