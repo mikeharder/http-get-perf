@@ -1,1 +1,1 @@
-docker run -it --rm --network host http-get-perf-net-http-client %*
+docker run -it --rm --network host --cpus 1 http-get-perf-net-http-client %*
