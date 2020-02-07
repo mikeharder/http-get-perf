@@ -12,11 +12,11 @@ Tests were run on Azure DS3_v2 VMs.  Client app was limited to a single CPU via 
 | python-sockets   | Python Async Sockets             | 26,476              |
 | python-aiohttp   | Python Async AioHttp Client      |  1,701              |
 
-The `wrk` app is a benchmarking tool written in C and designed for maximum throughput.  This represents the theoretical maximum performance of any language's HTTP client implementation.
+`wrk` is a benchmarking tool written in C and designed for maximum throughput.  This represents the theoretical maximum performance of any language's HTTP client implementation.
 
-The `net-sockets` and `python-sockets` apps use raw sockets to send an HTTP GET message and read the response bytes.  The request message bytes are pre-computed and reused for every request, and the response bytes are read but not parsed.  This represents the theoretical maximum performance of a given language's HTTP client implementation.
+`net-sockets` and `python-sockets` use raw sockets to send an HTTP GET message and read the response bytes.  The request message bytes are pre-computed and reused for every request, and the response bytes are read but not parsed.  This represents the theoretical maximum performance of a given language's HTTP client implementation.
 
-The `net-http-client` app uses the `System.Net.HttpClient` client, while `python-aiohttp` uses the `aiohttp` client.
+`net-http-client` uses the `System.Net.HttpClient` client, and `python-aiohttp` uses the `aiohttp` client.
 
 # Repro Steps
 
