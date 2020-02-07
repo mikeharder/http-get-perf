@@ -1,18 +1,22 @@
 # HTTP GET performance comparison
 
-This repo contains performance tests for a "hello world" HTTP GET request.
-
-# Results
-
 Tests were run on Azure DS3_v2 VMs.  Client app was limited to a single CPU via `docker run --cpus 1` for parity since Python is limited to a single CPU.
 
-| Client          | Description                    | Requests Per Second |
-|-----------------|--------------------------------|---------------------|
-| wrk             | Benchmarking tool written in C | 41,073              |
-| net-sockets     | .NET Core Async Sockets        | 28,942              |
-| net-http-client | .NET Core Async HttpClient     | 14,026              |
-| python-socket   | Python Async Sockets           | 26,476              |
-| python-aiohttp  | Python Async AioHttp Client    |  1,701              |
+![image](https://user-images.githubusercontent.com/9459391/74063092-99155e00-49a4-11ea-84f8-ccc882d4fe14.png)
+
+| Client           | Description                      | Requests Per Second |
+|------------------|----------------------------------|---------------------|
+| wrk              | Benchmarking tool (written in C) | 41,073              |
+| net-sockets      | .NET Core Async Sockets          | 28,942              |
+| net-http-client  | .NET Core Async HttpClient       | 14,026              |
+| python-sockets   | Python Async Sockets             | 26,476              |
+| python-aiohttp   | Python Async AioHttp Client      |  1,701              |
+
+The `wrk` app is a benchmarking tool written in C and designed for maximum throughput.  This represents the theoretical maximum performance of any language's HTTP client implementation.
+
+The `net-sockets` and `python-sockets` apps use raw sockets to send an HTTP GET message and read the response bytes.  The request message bytes are pre-computed and reused for every request, and the response bytes are read but not parsed.  This represents the theoretical maximum performance of a given language's HTTP client implementation.
+
+The `net-http-client` app uses the `System.Net.HttpClient` client, while `python-aiohttp` uses the `aiohttp` client.
 
 # Repro Steps
 
