@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker build -t httpgetperf-server .
+docker build -t http-get-perf-server .
