@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.Net;
 using System.Text;
 
-namespace Server
+namespace App
 {
     public class Program
     {
