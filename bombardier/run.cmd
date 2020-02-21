@@ -1,1 +1,1 @@
-docker run -it --rm --network host --cpus 1 alpine/bombardier -c 256 %*
+docker run -it --rm --network host alpine/bombardier -c 256 %*
