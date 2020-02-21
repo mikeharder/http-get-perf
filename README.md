@@ -1,19 +1,21 @@
 # HTTP GET performance comparison
 
-Tests were run on Azure DS3_v2 VMs.  Client app was limited to a single CPU via `docker run --cpus 1` for parity since Python is limited to a single CPU.
+Client was run on Azure DS1_V2 (1 core) for parity since Python is limited to a single CPU.  Server was run on Azure DS3_V2 (4 cores) to ensure server was not the bottleneck.
 
-![image](https://user-images.githubusercontent.com/9459391/74974414-0f20b880-53da-11ea-9a66-3f2f48fdf318.png)
+![image](https://user-images.githubusercontent.com/9459391/75067505-04315b00-54a2-11ea-8d1f-7cf1426e639a.png)
 
-| Client           | Description                       | Requests Per Second |
-|------------------|-----------------------------------|---------------------|
-| bombardier       | Benchmarking tool (written in go) | 67,390              |
-| wrk              | Benchmarking tool (written in C)  | 42,283              |
-| net-sockets      | .NET Core Async Sockets           | 28,942              |
-| net-http-client  | .NET Core Async HttpClient        | 14,026              |
-| python-sockets   | Python Async Sockets              | 26,476              |
-| python-aiohttp   | Python Async AioHttp Client       |  1,701              |
+| Client           | Description                       | Connections | Requests Per Second |
+|------------------|-----------------------------------|-------------|---------------------|
+| wrk              | Benchmarking tool (written in C)  | 256         | 71,284              |
+| bombardier       | Benchmarking tool (written in go) | 256         | 62,988              |
+| net-sockets      | .NET Core Async Sockets           | 64          | 67,231              |
+| net-http-client  | .NET Core Async HttpClient        | 64          | 28,099              |
+| python-sockets   | Python Async Sockets              | 256         | 33,652              |
+| python-aiohttp   | Python Async AioHttp Client       | 32          | 2,135               |
 
-`bombardier` and `wrk` are benchmarking tools written in Go and C and designed for maximum throughput.  This represents the theoretical maximum performance of any language's HTTP client implementation.
+`wrk` is a benchmarking tool written in C and designed for maximum throughput.  It represents the theoretical maximum performance of any language's HTTP client implementation.
+
+`bombardier` is an alternative benchmarking tool written in Go.
 
 `net-sockets` and `python-sockets` use raw sockets to send an HTTP GET message and read the response bytes.  The request message bytes are pre-computed and reused for every request, and the response bytes are read but not parsed.  This represents the theoretical maximum performance of a given language's HTTP client implementation.
 
