@@ -20,7 +20,7 @@ namespace App
             }
 
             var url = args[0];
-            var parallel = args.Length >= 2 ? Int32.Parse(args[1]) : 32;
+            var parallel = args.Length >= 2 ? Int32.Parse(args[1]) : 64;
             var warmup = args.Length >= 3 ? Int32.Parse(args[2]) : 10;
             var duration = args.Length >= 4 ? Int32.Parse(args[3]) : 10;
 
