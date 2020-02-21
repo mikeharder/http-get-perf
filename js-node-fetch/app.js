@@ -1,10 +1,11 @@
 const fetch = require('node-fetch');
+const http = require('http');
 
 let completedRequests = 0;
 
-async function executeRequests(url) {
+async function executeRequests(url, options) {
     while (true) {
-        const response = await fetch(url);
+        const response = await fetch(url, options);
         await response.text();
         completedRequests++;
     }
@@ -41,7 +42,7 @@ async function main() {
     const parallel = process.argv.length >= 4 ? parseInt(process.argv[3]) : 32;
     const warmup = process.argv.length >= 5 ? parseInt(process.argv[4]) : 10;
     const duration = process.argv.length >= 6 ? parseInt(process.argv[5]) : 10;
-    
+
     console.log('=== Parameters ===');
     console.log(`Url: ${url}`);
     console.log(`Parallel: ${parallel}`);
@@ -49,10 +50,14 @@ async function main() {
     console.log(`Duration: ${duration}`);
     console.log()
 
+    const options = {
+        agent: new http.Agent({ keepAlive: true })
+    };
+
     const promises = [];
 
-    for (let i=0; i < parallel; i++) {
-        promises[i] = executeRequests(url);
+    for (let i = 0; i < parallel; i++) {
+        promises[i] = executeRequests(url, options);
     }
 
     await collectResults('Warmup', warmup);
