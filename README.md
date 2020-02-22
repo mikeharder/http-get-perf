@@ -2,7 +2,7 @@
 
 Client was run on Azure DS1_V2 (1 core) for parity since Python is limited to a single CPU.  Server was run on Azure DS3_V2 (4 cores) to ensure server was not the bottleneck.
 
-![image](https://user-images.githubusercontent.com/9459391/75067505-04315b00-54a2-11ea-8d1f-7cf1426e639a.png)
+![image](https://user-images.githubusercontent.com/9459391/75081716-09ec6800-54c5-11ea-8702-b26e65c06412.png)
 
 | Client           | Description                       | Connections | Requests Per Second |
 |------------------|-----------------------------------|-------------|---------------------|
@@ -11,7 +11,9 @@ Client was run on Azure DS1_V2 (1 core) for parity since Python is limited to a 
 | net-sockets      | .NET Core Async Sockets           | 64          | 67,231              |
 | net-http-client  | .NET Core Async HttpClient        | 64          | 28,099              |
 | python-sockets   | Python Async Sockets              | 256         | 33,652              |
-| python-aiohttp   | Python Async AioHttp Client       | 32          | 2,135               |
+| python-aiohttp   | Python Async AioHttp              | 32          | 2,135               |
+| js-http          | JavaScript http                   | 64          | 13,971              |
+| js-node-fetch    | JavaScript node-fetch             | 64          | 8,430               |
 
 `wrk` is a benchmarking tool written in C and designed for maximum throughput.  It represents the theoretical maximum performance of any language's HTTP client implementation.
 
@@ -20,6 +22,8 @@ Client was run on Azure DS1_V2 (1 core) for parity since Python is limited to a 
 `net-sockets` and `python-sockets` use raw sockets to send an HTTP GET message and read the response bytes.  The request message bytes are pre-computed and reused for every request, and the response bytes are read but not parsed.  This represents the theoretical maximum performance of a given language's HTTP client implementation.
 
 `net-http-client` uses the `System.Net.HttpClient` client, and `python-aiohttp` uses the `aiohttp` client.
+
+`js-http` uses the `http` client, and `js-node-fetch` uses the `node-fetch` client.
 
 # Repro Steps
 
