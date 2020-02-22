@@ -1,6 +1,6 @@
 # HTTP GET performance comparison
 
-Client was run on Azure DS1_V2 (1 core) for parity since Python is limited to a single CPU.  Server was run on Azure DS3_V2 (4 cores) to ensure server was not the bottleneck.
+Client was run on Azure DS1_V2 (1 core) for parity since Python and JS are limited to a single CPU.  Server was run on Azure DS3_V2 (4 cores) to ensure server was not the bottleneck.
 
 ![image](https://user-images.githubusercontent.com/9459391/75082146-17a2ed00-54c7-11ea-858c-0bd42b531b7b.png)
 
