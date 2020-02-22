@@ -2,7 +2,7 @@
 
 Client was run on Azure DS1_V2 (1 core) for parity since Python is limited to a single CPU.  Server was run on Azure DS3_V2 (4 cores) to ensure server was not the bottleneck.
 
-![image](https://user-images.githubusercontent.com/9459391/75081716-09ec6800-54c5-11ea-8702-b26e65c06412.png)
+![image](https://user-images.githubusercontent.com/9459391/75082146-17a2ed00-54c7-11ea-858c-0bd42b531b7b.png)
 
 | Client           | Description                       | Connections | Requests Per Second |
 |------------------|-----------------------------------|-------------|---------------------|
