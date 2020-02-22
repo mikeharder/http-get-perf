@@ -44,7 +44,7 @@ async function main() {
     }
 
     const urlString = process.argv[2];
-    const parallel = process.argv.length >= 4 ? parseInt(process.argv[3]) : 64;
+    const parallel = process.argv.length >= 4 ? parseInt(process.argv[3]) : 128;
     const warmup = process.argv.length >= 5 ? parseInt(process.argv[4]) : 10;
     const duration = process.argv.length >= 6 ? parseInt(process.argv[5]) : 10;
 
