@@ -1,0 +1,9 @@
+.dockerignore
+Dockerfile
+
+.gitignore
+
+*.cmd
+*.sh
+
+target
