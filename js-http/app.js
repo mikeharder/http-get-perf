@@ -5,7 +5,11 @@ let completedRequests = 0;
 function executeRequests(url, options) {
     http.get(url, options, (res) => {
         res.on('data', (chunk) => { });
-        res.on('end', () => { completedRequests++; executeRequests(url, options); });
+
+        res.on('end', () => {
+            completedRequests++;
+            executeRequests(url, options);
+        });
     });
 }
 
