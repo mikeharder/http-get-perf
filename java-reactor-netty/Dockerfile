@@ -7,7 +7,7 @@ RUN mvn dependency:go-offline
 
 # Copy sources and build JAR
 COPY . .
-RUN mvn package
+RUN mvn -o package
 
 FROM openjdk:11-jre AS runtime
 WORKDIR /app
