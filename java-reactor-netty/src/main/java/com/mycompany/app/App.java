@@ -1,9 +1,15 @@
 package com.mycompany.app;
 
+import java.util.concurrent.atomic.AtomicInteger;
+
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.netty.http.client.HttpClient;
 
 public class App {
     private static final HttpClient _httpClient = HttpClient.create();
+    private static AtomicInteger _completedRequests = new AtomicInteger(0);
 
     public static void main(String[] args) {
         if (args.length == 0) {
@@ -17,14 +23,47 @@ public class App {
         int duration = args.length >= 4 ? Integer.parseInt(args[3]) : 10;
 
         System.out.println("=== Parameters ===");
-        System.out.println(String.format("Url: %s", url));
-        System.out.println(String.format("Parallel: %s", parallel));
-        System.out.println(String.format("Warmup: %s", warmup));
-        System.out.println(String.format("Duration: %s", duration));
+        System.out.printf("Url: %s%n", url);
+        System.out.printf("Parallel: %s%n", parallel);
+        System.out.printf("Warmup: %s%n", warmup);
+        System.out.printf("Duration: %s%n", duration);
         System.out.println();
 
-        String response = _httpClient.get().uri(url).responseContent().aggregate().asString().block();
+        Flux.range(0, parallel).parallel().runOn(Schedulers.boundedElastic()).flatMap(i -> ExecuteRequests(url)).subscribe();
 
-        System.out.println(response);
+        CollectResults("Warmup", warmup);
+        CollectResults("Test", duration);
+    }
+
+    private static Mono<Void> ExecuteRequests(String url) {
+       return Flux.just(1).repeat()
+                .flatMap(i -> _httpClient.get().uri(url).responseContent().aggregate().asString().then(Mono.just(1)), 1)
+                .doOnNext(v -> {
+                    _completedRequests.incrementAndGet();
+                }).then();
+    }
+
+    private static void CollectResults(String title, int duration) {
+        System.out.printf("=== %s ===%n", title);
+        
+        long startNanoTime = System.nanoTime();
+        _completedRequests.set(0);
+
+        try {
+            Thread.sleep(duration * 1000);
+        }
+        catch (Exception e) {
+        }
+
+        PrintResults(_completedRequests.get(), (System.nanoTime() - startNanoTime));
+    }
+
+    private static void PrintResults(int completedRequests, long elapsedNanoTime) {
+        double elapsedSeconds = elapsedNanoTime / 1000000000;
+        double requestsPerSecond = completedRequests / elapsedSeconds;
+
+        System.out.printf("Completed %d requests in %.2f seconds (%.0f req/s)%n",
+            completedRequests, elapsedSeconds, requestsPerSecond);
+        System.out.println();
     }
 }
