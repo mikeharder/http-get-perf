@@ -2,19 +2,20 @@
 
 Client was run on Azure DS1_V2 (1 core) for parity since Python and JS are limited to a single CPU.  Server was run on Azure DS3_V2 (4 cores) to ensure server was not the bottleneck.
 
-![image](https://user-images.githubusercontent.com/9459391/75083606-d6aed680-54ce-11ea-8069-ab10f6777933.png)
+![image](https://user-images.githubusercontent.com/9459391/75201357-1c60de80-571d-11ea-8a29-a33f6eee1059.png)
 
-| Client           | Description                       | Connections | Requests Per Second |
-|------------------|-----------------------------------|-------------|---------------------|
-| wrk              | Benchmarking tool (written in C)  | 256         | 71,284              |
-| bombardier       | Benchmarking tool (written in go) | 256         | 62,988              |
-| net-sockets      | .NET Core Async Sockets           | 64          | 67,231              |
-| net-http-client  | .NET Core Async HttpClient        | 64          | 28,099              |
-| js-sockets       | JavaScript net.Socket             | 128         | 64,795              |
-| js-http          | JavaScript http                   | 64          | 13,971              |
-| js-node-fetch    | JavaScript node-fetch             | 64          | 8,430               |
-| python-sockets   | Python Async Sockets              | 256         | 33,652              |
-| python-aiohttp   | Python Async AioHttp              | 32          | 2,135               |
+| Client              | Description                       | Connections | Requests Per Second |
+|---------------------|-----------------------------------|-------------|---------------------|
+| wrk                 | Benchmarking tool (written in C)  | 256         | 71,284              |
+| bombardier          | Benchmarking tool (written in go) | 256         | 62,988              |
+| net-sockets         | .NET Core Async Sockets           | 64          | 67,231              |
+| net-http-client     | .NET Core Async HttpClient        | 64          | 28,099              |
+| java-reactor-netty  | Java Reactor Netty                | 64          | 26,546              |
+| js-sockets          | JavaScript net.Socket             | 128         | 64,795              |
+| js-http             | JavaScript http                   | 64          | 13,971              |
+| js-node-fetch       | JavaScript node-fetch             | 64          | 8,430               |
+| python-sockets      | Python Async Sockets              | 256         | 33,652              |
+| python-aiohttp      | Python Async AioHttp              | 32          | 2,135               |
 
 `wrk` is a benchmarking tool written in C and designed for maximum throughput.  It represents the theoretical maximum performance of any language's HTTP client implementation.
 
@@ -23,6 +24,8 @@ Client was run on Azure DS1_V2 (1 core) for parity since Python and JS are limit
 `net-sockets`, `js-sockets`, and `python-sockets` use raw sockets to send an HTTP GET message and read the response bytes.  The request message bytes are pre-computed and reused for every request, and the response bytes are read but not parsed.  This represents the theoretical maximum performance of a given language's HTTP client implementation.
 
 `net-http-client` uses the `System.Net.HttpClient` client.
+
+`java-reactor-netty` uses the `reactor-netty` client.
 
 `js-http` uses the `http` client, and `js-node-fetch` uses the `node-fetch` client.
 
