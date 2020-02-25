@@ -1,6 +1,14 @@
 const { ServiceClient, createPipelineFromOptions, Serializer } = require('@azure/core-http');
 
-const client = new ServiceClient(undefined, createPipelineFromOptions({}));
+const pipeline = createPipelineFromOptions({
+    deserializationOptions: {
+      expectedContentTypes: {
+        json: ["application/json", "text/json"]
+      }
+    }
+  });
+
+const client = new ServiceClient(undefined, pipeline);
 
 let completedRequests = 0;
 
