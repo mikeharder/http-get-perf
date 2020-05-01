@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net.Http;
+using System.Runtime;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -29,6 +30,7 @@ namespace App
             Console.WriteLine($"Parallel: {parallel}");
             Console.WriteLine($"Warmup: {warmup}");
             Console.WriteLine($"Duration: {duration}");
+            Console.WriteLine($"GCSettings.IsServerGC: {GCSettings.IsServerGC}");
             Console.WriteLine();
 
             var tasks = new Task[parallel];
