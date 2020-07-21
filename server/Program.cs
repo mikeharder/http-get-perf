@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System.Net;
 using System.Text;
 
@@ -17,6 +18,7 @@ namespace App
                 .UseKestrel(options =>
                 {
                     options.Listen(IPAddress.Any, 5000);
+                    options.Limits.MaxRequestBodySize = null;
                 })
                 .Configure(app => app.Run(async context =>
                 {
@@ -24,27 +26,16 @@ namespace App
                     {
                         long bytesRead = 0;
 
-                        // Causes clients to report response read errors
-                        //var reader = context.Request.BodyReader;
-                        //while (true)
-                        //{
-                        //    var result = await reader.ReadAsync();
-                        //    bytesRead += result.Buffer.Length;
-                        //    if (result.IsCompleted)
-                        //    {
-                        //        break;
-                        //    }
-                        //    else
-                        //    {
-                        //        reader.AdvanceTo(result.Buffer.End);
-                        //    }
-                        //}
-
-                        var buffer = new byte[8192];
-                        int currentBytesRead = 0;
-                        while ((currentBytesRead = await context.Request.Body.ReadAsync(buffer, 0, buffer.Length)) > 0)
+                        var reader = context.Request.BodyReader;
+                        while (true)
                         {
-                            bytesRead += currentBytesRead;
+                            var result = await reader.ReadAsync();
+                            bytesRead += result.Buffer.Length;
+                            reader.AdvanceTo(result.Buffer.End);
+                            if (result.IsCompleted)
+                            {
+                                break;
+                            }
                         }
 
                         var payload = Encoding.UTF8.GetBytes(bytesRead.ToString());
@@ -66,3 +57,4 @@ namespace App
         }
     }
 }
+
