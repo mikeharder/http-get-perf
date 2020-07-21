@@ -22,20 +22,29 @@ namespace App
                 {
                     if (HttpMethods.IsPut(context.Request.Method))
                     {
-                        var reader = context.Request.BodyReader;
                         long bytesRead = 0;
-                        while (true)
+
+                        // Causes clients to report response read errors
+                        //var reader = context.Request.BodyReader;
+                        //while (true)
+                        //{
+                        //    var result = await reader.ReadAsync();
+                        //    bytesRead += result.Buffer.Length;
+                        //    if (result.IsCompleted)
+                        //    {
+                        //        break;
+                        //    }
+                        //    else
+                        //    {
+                        //        reader.AdvanceTo(result.Buffer.End);
+                        //    }
+                        //}
+
+                        var buffer = new byte[8192];
+                        int currentBytesRead = 0;
+                        while ((currentBytesRead = await context.Request.Body.ReadAsync(buffer, 0, buffer.Length)) > 0)
                         {
-                            var result = await reader.ReadAsync();
-                            bytesRead += result.Buffer.Length;
-                            if (result.IsCompleted)
-                            {
-                                break;
-                            }
-                            else
-                            {
-                                reader.AdvanceTo(result.Buffer.End);
-                            }
+                            bytesRead += currentBytesRead;
                         }
 
                         var payload = Encoding.UTF8.GetBytes(bytesRead.ToString());
