@@ -20,7 +20,7 @@ namespace App
                 })
                 .Configure(app => app.Run(async context =>
                 {
-                    if (context.Request.Method == HttpMethods.Put)
+                    if (HttpMethods.IsPut(context.Request.Method))
                     {
                         var reader = context.Request.BodyReader;
                         long bytesRead = 0;
