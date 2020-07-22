@@ -51,7 +51,7 @@ conn = http.client.HTTPConnection(parsedUrl.netloc)
 
 while True:
     start = time.perf_counter()
-    conn.request("PUT", parsedUrl.path, body=LargeStream(size))
+    conn.request("PUT", parsedUrl.path, body=LargeStream(size), headers=headers)
     resp = conn.getresponse()
     resp.read()
     stop = time.perf_counter()
