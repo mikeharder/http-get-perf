@@ -45,14 +45,10 @@ async def main():
     print(f'Duration: {duration}')
     print()
 
-    session = aiohttp.ClientSession()
-    asyncio.gather(*[execute_requests(session, url) for i in range(parallel)])
-
-    await collect_results('Warmup', warmup)
-    await collect_results('Test', duration)
-
-    # Prevent warnings due to unclosed loop/connections
-    sys.exit()
+    async with aiohttp.ClientSession() as session:
+        asyncio.gather(*[execute_requests(session, url) for i in range(parallel)])
+        await collect_results('Warmup', warmup)
+        await collect_results('Test', duration)
 
 loop = asyncio.get_event_loop()
 loop.run_until_complete(main())
