@@ -30,11 +30,12 @@ class LargeStream:
         return self._remaining
 
 if len(sys.argv) == 1:
-    print('Usage: app <url> <size>')
+    print('Usage: app <url> <size> <array|stream>')
     exit(1)
 
 url = sys.argv[1]
 size = int(sys.argv[2]) if len(sys.argv) >= 3 else 1024
+stream = (sys.argv[3] == "stream") if len(sys.argv) >= 4 else False
 
 print('=== Parameters ===')
 print(f'Url: {url}')
