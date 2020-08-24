@@ -9,7 +9,10 @@ namespace App
 {
     public class Program
     {
-        private static readonly HttpClient _httpClient = new HttpClient();
+        private static readonly HttpClient _httpClient = new HttpClient(new HttpClientHandler()
+        {
+            ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true
+        });
 
         public static async Task Main(string[] args)
         {
