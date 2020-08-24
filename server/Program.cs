@@ -18,6 +18,10 @@ namespace App
                 .UseKestrel(options =>
                 {
                     options.Listen(IPAddress.Any, 5000);
+                    options.Listen(IPAddress.Any, 5001, listenOptions =>
+                    {
+                        listenOptions.UseHttps("testCert.pfx", "testPassword");
+                    });
                     options.Limits.MaxRequestBodySize = null;
                 })
                 .Configure(app => app.Run(async context =>
