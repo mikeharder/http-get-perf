@@ -1,4 +1,5 @@
 import os
+import ssl
 import sys
 import time
 from urllib.parse import urlparse
@@ -48,7 +49,8 @@ headers = {
     "Content-Length": str(size),
 }
 
-conn = http.client.HTTPConnection(parsedUrl.netloc)
+# Allow self-signed SSL certs
+conn = http.client.HTTPSConnection(parsedUrl.netloc, context=ssl.SSLContext())
 
 while True:
     start = time.perf_counter()
