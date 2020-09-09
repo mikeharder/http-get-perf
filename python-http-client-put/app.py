@@ -47,6 +47,7 @@ parsedUrl = urlparse(url)
 
 headers = {
     "Content-Length": str(size),
+    "x-ms-blob-type": "BlockBlob"
 }
 
 # Allow self-signed SSL certs
@@ -56,7 +57,7 @@ array = os.urandom(size)
 while True:
     body = LargeStream(size) if stream else array
     start = time.perf_counter()
-    conn.request("PUT", parsedUrl.path, body=body, headers=headers)
+    conn.request("PUT", url, body=body, headers=headers)
     resp = conn.getresponse()
     resp.read()
     stop = time.perf_counter()
@@ -64,4 +65,4 @@ while True:
     duration = stop - start
     mbps = ((size / duration) * 8) / (1024 * 1024)
 
-    print(f'Put {size:,} bytes in {duration:.2f} seconds ({mbps:.2f} Mbps)')
+    print(f'Put {size:,} bytes in {duration:.2f} seconds ({mbps:.2f} Mbps), Response={resp.status}')
