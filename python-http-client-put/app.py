@@ -52,9 +52,11 @@ headers = {
 # Allow self-signed SSL certs
 conn = http.client.HTTPSConnection(parsedUrl.netloc, context=ssl.SSLContext())
 
+array = os.urandom(size)
 while True:
+    body = LargeStream(size) if stream else array
     start = time.perf_counter()
-    conn.request("PUT", parsedUrl.path, body=LargeStream(size), headers=headers)
+    conn.request("PUT", parsedUrl.path, body=body, headers=headers)
     resp = conn.getresponse()
     resp.read()
     stop = time.perf_counter()
