@@ -52,7 +52,6 @@ def main():
             thread.daemon = True
             threads.append(thread)
             thread.start()
-            print('thread')
         collect_results('Warmup', warmup)
         collect_results('Test', duration)
 
