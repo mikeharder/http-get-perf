@@ -1,0 +1,5 @@
+version: "3.9"
+services:
+  iperf3:
+    image: networkstatic/iperf3
+    network_mode: "host"
