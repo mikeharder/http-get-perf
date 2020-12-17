@@ -16,7 +16,7 @@ namespace App
         {
             if (args.Length == 0)
             {
-                Console.WriteLine("Usage: app <url> <parallel> <warmup> <duration> <size>");
+                Console.WriteLine("Usage: app <url> <parallel> <warmup> <duration>");
                 return;
             }
 
@@ -24,28 +24,19 @@ namespace App
             var parallel = args.Length >= 2 ? Int32.Parse(args[1]) : 64;
             var warmup = args.Length >= 3 ? Int32.Parse(args[2]) : 10;
             var duration = args.Length >= 4 ? Int32.Parse(args[3]) : 10;
-            var size = args.Length >= 5 ? Int32.Parse(args[4]) : 0;
 
             Console.WriteLine($"=== Parameters ===");
             Console.WriteLine($"Url: {url}");
             Console.WriteLine($"Parallel: {parallel}");
             Console.WriteLine($"Warmup: {warmup}");
             Console.WriteLine($"Duration: {duration}");
-            Console.WriteLine($"Size: {size}");
             Console.WriteLine($"GCSettings.IsServerGC: {GCSettings.IsServerGC}");
             Console.WriteLine();
-
-            byte[] payload = null;
-            if (size > 0)
-            {
-                payload = new byte[size];
-                (new Random(0)).NextBytes(payload);
-            }
 
             var tasks = new Task[parallel];
             for (var i=0; i < parallel; i++)
             {
-                tasks[i] = ExecuteRequests(url, payload);
+                tasks[i] = ExecuteRequests(url);
             }
 
             await CollectResults("Warmup", warmup);
@@ -73,27 +64,18 @@ namespace App
             Console.WriteLine();
         }
 
-        private static async Task ExecuteRequests(string url, byte[] payload)
+        private static async Task ExecuteRequests(string url)
         {
             while (true)
             {
-                await ExecuteRequest(url, payload);
+                await ExecuteRequest(url);
                 Interlocked.Increment(ref _completedRequests);
             }
         }
 
-        private static async Task ExecuteRequest(string url, byte[] payload)
+        private static async Task ExecuteRequest(string url)
         {
-            if (payload != null)
-            {
-                using var content = new ByteArrayContent(payload);
-                using var response = await _httpClient.PutAsync(url, content);
-                await response.Content.ReadAsStringAsync();
-            }
-            else
-            {
-                await _httpClient.GetStringAsync(url);
-            }
+            await _httpClient.GetStringAsync(url);
         }
     }
 }
