@@ -50,9 +50,8 @@ Hello, World!
 
 1. `git clone https://github.com/mikeharder/http-get-perf`
 2. `cd http-get-perf/server`
-3. `./build.sh`
-4. `./run.sh`
-5. The same instance of the server can be re-used for all test runs
+3. `docker-compose run --rm server`
+4. The same instance of the server can be re-used for all test runs
 
 ## Client
 The client apps make HTTP GET requests to the server in a loop and measure throughput.  Example:
@@ -74,5 +73,4 @@ Completed 17,055 requests in 10.03 seconds (1,701 req/s)
 
 1. `git clone https://github.com/mikeharder/http-get-perf`
 2. `cd http-get-perf/<client-app>`
-3. `./build.sh`
-4. `./run.sh http://<server-host-or-ip>:5000`
+3. `docker-compose run --rm client http://<server-host-or-ip>:5000`
