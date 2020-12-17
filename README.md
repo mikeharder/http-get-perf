@@ -57,7 +57,7 @@ Hello, World!
 The client apps make HTTP GET requests to the server in a loop and measure throughput.  Example:
 
 ```
-~/http-get-perf/python-aiohttp$ ./run.sh http://server-host-or-ip:5000
+~/http-get-perf/python-aiohttp$ docker-compose run --rm client http://server-host-or-ip:5000
 === Parameters ===
 Url: http://server-host-or-ip:5000
 Parallel: 32
