@@ -41,7 +41,7 @@ def main():
     print('=== Parameters ===')
     print(f'Url: {url}')
     print(f'Parallel: {parallel}')
-    print(f'Warmup: {duration}')
+    print(f'Warmup: {warmup}')
     print(f'Duration: {duration}')
     print()
 
