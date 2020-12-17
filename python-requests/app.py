@@ -55,10 +55,4 @@ def main():
         collect_results('Warmup', warmup)
         collect_results('Test', duration)
 
-
-    # async with aiohttp.ClientSession() as session:
-    #     asyncio.gather(*[execute_requests(session, url) for i in range(parallel)])
-    #     await collect_results('Warmup', warmup)
-    #     await collect_results('Test', duration)
-
 main()
