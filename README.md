@@ -21,7 +21,7 @@ Client was run on Azure DS1_V2 (1 core) for parity since Python and JS are limit
 
 `bombardier` is an alternative benchmarking tool written in Go.
 
-`net-sockets`, `js-sockets`, and `python-sockets` use raw sockets to send an HTTP GET message and read the response bytes.  The request message bytes are pre-computed and reused for every request, and the response bytes are read but not parsed.  This represents the theoretical maximum performance of a given language's HTTP client implementation.
+`net-sockets`, `js-sockets`, and `python-raw-sockets` use raw sockets to send an HTTP GET message and read the response bytes.  The request message bytes are pre-computed and reused for every request, and the response bytes are read but not parsed.  This represents the theoretical maximum performance of a given language's HTTP client implementation.  (`python-sockets` uses Python's async socket interface from the stdlib's `asyncio` library.)
 
 `net-http-client` uses the `System.Net.HttpClient` client.
 
