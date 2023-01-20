@@ -1,4 +1,5 @@
 import asyncio
+import uvloop
 import sys
 import time
 from blacksheep.client import ClientSession
@@ -51,6 +52,7 @@ async def main():
         await collect_results('Warmup', warmup)
         await collect_results('Test', duration)
 
-loop = asyncio.get_event_loop()
+loop = uvloop.new_event_loop()
+asyncio.set_event_loop(loop)
 loop.run_until_complete(main())
 loop.close()
