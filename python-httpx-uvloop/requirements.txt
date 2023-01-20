@@ -1,2 +1,2 @@
 httpx==0.23.3
-uvloop=0.17.0
+uvloop==0.17.0
