@@ -34,7 +34,7 @@ async def main():
         return
     
     url = sys.argv[1]
-    parallel = int(sys.argv[2]) if len(sys.argv) >= 3 else 32
+    parallel = int(sys.argv[2]) if len(sys.argv) >= 3 else 64
     warmup = int(sys.argv[3]) if len(sys.argv) >= 4 else 10
     duration = int(sys.argv[4]) if len(sys.argv) >= 5 else 10
 
