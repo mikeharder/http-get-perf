@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Net.Sockets;
+using System.Runtime;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +30,7 @@ namespace App
             Console.WriteLine($"Parallel: {parallel}");
             Console.WriteLine($"Warmup: {warmup}");
             Console.WriteLine($"Duration: {duration}");
+            Console.WriteLine($"GCSettings.IsServerGC: {GCSettings.IsServerGC}");
             Console.WriteLine();
 
             var uri = new Uri(url);
