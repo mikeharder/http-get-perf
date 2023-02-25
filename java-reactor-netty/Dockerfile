@@ -1,4 +1,4 @@
-FROM maven:3-jdk-11 as build
+FROM maven:3.9.0 as build
 
 # Copy pom.xml and install dependencies
 WORKDIR /app
@@ -9,7 +9,7 @@ RUN mvn dependency:go-offline
 COPY . .
 RUN mvn -o package
 
-FROM openjdk:11-jre AS runtime
+FROM eclipse-temurin:17.0.6_10-jre AS runtime
 WORKDIR /app
 COPY --from=build /app/target/java-reactor-netty-1.0-SNAPSHOT-jar-with-dependencies.jar .
 ENTRYPOINT ["java", "-jar", "java-reactor-netty-1.0-SNAPSHOT-jar-with-dependencies.jar"]
