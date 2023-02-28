@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Runtime;
 using System.Threading;
@@ -9,15 +10,22 @@ namespace App
 {
     public class Program
     {
-        private static readonly HttpClient _httpClient = new HttpClient();
+        private static HttpClient _httpClient;
         private static int _completedRequests = 0;
 
         public static async Task Main(string[] args)
         {
             if (args.Length == 0)
             {
-                Console.WriteLine("Usage: app <url> <parallel> <warmup> <duration>");
+                Console.WriteLine("Usage: app <url> <parallel> <warmup> <duration> [--insecure]");
                 return;
+            }
+
+            var insecure = false;
+            if (args.Contains("--insecure", StringComparer.OrdinalIgnoreCase))
+            {
+                insecure = true;
+                args = args.Where(a => !a.Equals("--insecure", StringComparison.OrdinalIgnoreCase)).ToArray();
             }
 
             var url = args[0];
@@ -30,8 +38,20 @@ namespace App
             Console.WriteLine($"Parallel: {parallel}");
             Console.WriteLine($"Warmup: {warmup}");
             Console.WriteLine($"Duration: {duration}");
+            Console.WriteLine($"Insecure: {insecure}");
             Console.WriteLine($"GCSettings.IsServerGC: {GCSettings.IsServerGC}");
             Console.WriteLine();
+
+            if (insecure)
+            {
+                var httpClientHandler = new HttpClientHandler();
+                httpClientHandler.ServerCertificateCustomValidationCallback = (message, cert, chain, errors) => true;
+                _httpClient = new HttpClient(httpClientHandler);
+            }
+            else
+            {
+                _httpClient = new HttpClient();
+            }
 
             var tasks = new Task[parallel];
             for (var i=0; i < parallel; i++)
