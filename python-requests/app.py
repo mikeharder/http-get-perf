@@ -32,7 +32,12 @@ def main():
     if len(sys.argv) == 1:
         print('Usage: app <url> <parallel> <warmup> <duration>')
         return
-    
+
+    insecure = False
+    if '--insecure' in sys.argv:
+        insecure = True
+        sys.argv.remove('--insecure')
+
     url = sys.argv[1]
     parallel = int(sys.argv[2]) if len(sys.argv) >= 3 else 64
     warmup = int(sys.argv[3]) if len(sys.argv) >= 4 else 10
@@ -43,9 +48,14 @@ def main():
     print(f'Parallel: {parallel}')
     print(f'Warmup: {warmup}')
     print(f'Duration: {duration}')
+    print(f'Insecure: {insecure}')
     print()
 
     with requests.Session() as session:
+        if insecure:
+            session.verify = False
+            requests.packages.urllib3.disable_warnings(requests.packages.urllib3.exceptions.InsecureRequestWarning)
+
         threads = []
         for _ in range(parallel):
             thread = threading.Thread(target=lambda: execute_requests(session, url))
