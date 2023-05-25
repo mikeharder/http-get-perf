@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@azure/core-http": "^1.0.3"
+    "@azure/core-http": "^3.0.1"
   }
 }
