@@ -1,2 +1,2 @@
-aiohttp==3.9.4
+aiohttp==3.10.2
 uvloop==0.17.0
